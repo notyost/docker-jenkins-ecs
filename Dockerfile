@@ -5,10 +5,10 @@ RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
 
-ARG user=jenkins
-ARG group=jenkins
-ARG uid=1000
-ARG gid=1000
+ENV user=jenkins
+ENV group=jenkins
+ENV uid=666
+ENV gid=497
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container, 
@@ -35,14 +35,14 @@ RUN curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
 # jenkins version being bundled in this docker image
-ARG JENKINS_VERSION
+ENV JENKINS_VERSION
 ENV JENKINS_VERSION ${JENKINS_VERSION:-2.19.1}
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA=dc28b91e553c1cd42cc30bd75d0f651671e6de0b
+ENV JENKINS_SHA=dc28b91e553c1cd42cc30bd75d0f651671e6de0b
 
 # Can be used to customize where jenkins.war get downloaded from
-ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
+ENV JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
 
 # could use ADD but this one does not check Last-Modified header neither does it allow to control checksum 
 # see https://github.com/docker/docker/issues/8331
