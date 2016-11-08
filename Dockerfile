@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk
 
 RUN apt-get update && apt-get install -y git curl python-dev python-pip vim &&\
-    pip install aws credstash &&\
+    pip install awscli credstash &&\
     rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
